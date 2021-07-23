@@ -7,7 +7,7 @@ mp_holistic = mp.solutions.holistic
 mp_drawing.DrawingSpec(color=(0,0,255), thickness=2, circle_radius=2)
 
 
-cap = cv2.VideoCapture(1, cv2.CAP_DSHOW)
+cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 # initiate holistic model
 with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
     while cap.isOpened():
