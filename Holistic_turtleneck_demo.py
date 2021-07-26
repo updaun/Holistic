@@ -2,11 +2,14 @@ import cv2
 import mediapipe as mp
 import time
 import HolisticModule as hm
+from win10toast import ToastNotifier
 
 pTime = 0
 cTime = 0
 cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 detector = hm.HolisticDetector()
+
+toaster = ToastNotifier()
 
 turtle_neck_count = 0
 
@@ -31,7 +34,8 @@ while True:
 
         if length < 100 and turtle_neck_count > 100:
             print("WARNING - Keep your posture straight.")
-            print("TurtleNeck Point = ", int(length))
+            print("TurtleNeck Point = ", 100 - int(length))
+            toaster.show_toast("TurtleNect WARNING", f"Keep your posture straight.\n\nTurtleNeck Point = {100 - int(length)}")
             turtle_neck_count = 0
 
     cTime = time.time()
