@@ -16,10 +16,10 @@ turtle_neck_count = 0
 while True:
     success, img = cap.read()
 
-    img = detector.findHolistic(img, draw=False)
+    img = detector.findHolistic(img, draw=True)
 
-    pose_lmList = detector.findPoseLandmark(img, draw=False)
-    face_lmList = detector.findFaceLandmark(img, draw=False)
+    pose_lmList = detector.findPoseLandmark(img, draw=True)
+    face_lmList = detector.findFaceLandmark(img, draw=True)
     
 
     if len(pose_lmList) != 0 and len(face_lmList) != 0:
@@ -28,7 +28,7 @@ while True:
         # print("face[152]",face_lmList[152])
 
         center_shoulder = detector.findCenter(11,12)
-        length, img = detector.findDistance(152, center_shoulder, img, draw=False)
+        length, img = detector.findDistance(152, center_shoulder, img, draw=True)
         pose_depth = 500 - detector.findDepth(11,12)
 
         # if pose_depth < 200:
@@ -38,7 +38,7 @@ while True:
 
         turtleneck_detect_threshold = pose_depth / 6
         
-        # print(length, turtleneck_detect_threshold, pose_depth)
+        print(length, turtleneck_detect_threshold, pose_depth)
 
 
         if length < turtleneck_detect_threshold:
@@ -57,7 +57,7 @@ while True:
 
     cv2.putText(img,str(int(fps)),(10,70), cv2.FONT_HERSHEY_PLAIN,3,(255,0,255),3)
 
-    # cv2.imshow("Image", img)
+    cv2.imshow("Image", img)
 
     if cv2.waitKey(1) & 0xFF == 27:
         break 

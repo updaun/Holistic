@@ -62,11 +62,12 @@ class HolisticDetector():
             for id, lm in enumerate(myHolistic.landmark):
                 # print(id,lm)
                 h, w, c = img.shape
-                cx, cy = int(lm.x*w), int(lm.y*h)
+                cx, cy, cz = int(lm.x*w), int(lm.y*h), int(lm.z*(w+h)/2)
                 # print(id, cx, cy)
+                # print(cz)
                 xList.append(cx)
                 yList.append(cy)
-                self.pose_lmList.append([id, cx, cy])
+                self.pose_lmList.append([id, cx, cy, cz])
 
         return self.pose_lmList
 
@@ -77,7 +78,6 @@ class HolisticDetector():
         self.face_lmList = []
         if self.results.face_landmarks:
             myHolistic = self.results.face_landmarks
-            # print(myHolistic.landmark)
             # print(type(myHolistic.landmark))
             for id, lm in enumerate(myHolistic.landmark):
                 # print(id,lm)
@@ -92,8 +92,8 @@ class HolisticDetector():
 
 
     def findCenter(self, p1, p2):
-        x1, y1 = self.pose_lmList[p1][1:]
-        x2, y2 = self.pose_lmList[p2][1:]
+        x1, y1 = self.pose_lmList[p1][1:3]
+        x2, y2 = self.pose_lmList[p2][1:3]
         cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
 
         return cx, cy
@@ -109,3 +109,7 @@ class HolisticDetector():
         length = math.hypot(x2-x1, y2-y1)
 
         return length, img
+
+    def findDepth(self, p1, p2):
+        depth = abs((self.pose_lmList[p1][3] + self.pose_lmList[p2][3]) / 2)
+        return depth
