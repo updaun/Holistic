@@ -43,7 +43,7 @@ while True:
         #     turtleneck_detect_threshold = 70
 
         # turtleneck_detect_threshold = pose_depth / 4
-        turtleneck_detect_threshold = math.log2(pose_depth) * sensitivity
+        turtleneck_detect_threshold = abs(math.log2(pose_depth)) * sensitivity
         
         print("Length : {:.3f},   Threshold : {:.3f},   Pose_depth : {}".format(length, turtleneck_detect_threshold, pose_depth))
     
