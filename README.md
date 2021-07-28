@@ -15,7 +15,7 @@ git clone https://github.com/updaun/Holistic.git
 
 - move your working directory(CMD)
 ```
-cd [YOUR WORKING DIRECTORY PATH]
+cd Holistic
 ```
 
 - install requirements( you have to go your working directory)
