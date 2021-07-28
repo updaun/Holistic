@@ -35,7 +35,7 @@ while True:
 
         center_shoulder = detector.findCenter(11,12)
         length, img = detector.findDistance(152, center_shoulder, img, draw=False)
-        pose_depth = 500 - detector.findDepth(11,12)
+        pose_depth = abs(500 - detector.findDepth(11,12))
 
         # if pose_depth < 200:
         #     turtleneck_detect_threshold = 55
@@ -43,7 +43,10 @@ while True:
         #     turtleneck_detect_threshold = 70
 
         # turtleneck_detect_threshold = pose_depth / 4
-        turtleneck_detect_threshold = abs(math.log2(pose_depth)) * sensitivity
+        if pose_depth > 0:
+            turtleneck_detect_threshold = abs(math.log2(pose_depth)) * sensitivity
+        else:
+            turtleneck_detect_threshold = 50
         
         # print("Length : {:.3f},   Threshold : {:.3f},   Pose_depth : {}".format(length, turtleneck_detect_threshold, pose_depth))
     
