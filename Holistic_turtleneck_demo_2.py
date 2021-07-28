@@ -3,6 +3,11 @@ import mediapipe as mp
 import time
 import HolisticModule as hm
 from win10toast import ToastNotifier
+import math
+
+###################################################
+sensitivity = 6
+###################################################
 
 pTime = 0
 cTime = 0
@@ -12,6 +17,7 @@ detector = hm.HolisticDetector()
 toaster = ToastNotifier()
 
 turtle_neck_count = 0
+
 
 while True:
     success, img = cap.read()
@@ -36,9 +42,11 @@ while True:
         # else:
         #     turtleneck_detect_threshold = 70
 
-        turtleneck_detect_threshold = pose_depth / 6
+        # turtleneck_detect_threshold = pose_depth / 4
+        turtleneck_detect_threshold = math.log2(pose_depth) * sensitivity
         
-        print(length, turtleneck_detect_threshold, pose_depth)
+        print("Length : {:.3f},   Threshold : {:.3f},   Pose_depth : {}".format(length, turtleneck_detect_threshold, pose_depth))
+    
 
 
         if length < turtleneck_detect_threshold:
@@ -48,7 +56,7 @@ while True:
             tutleneck_score = int((turtleneck_detect_threshold - int(length))/turtleneck_detect_threshold*100)
             print("WARNING - Keep your posture straight.")
             print("TurtleNeck Score = ", tutleneck_score)
-            toaster.show_toast("TurtleNect WARNING", f"Keep your posture straight.\n\nTurtleNeck Detection = {tutleneck_score}")
+            toaster.show_toast("TurtleNect WARNING", f"Keep your posture straight.\n\nDegree Of TurtleNeck = {tutleneck_score}")
             turtle_neck_count = 0
 
     cTime = time.time()
