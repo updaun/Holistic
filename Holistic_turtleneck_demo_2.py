@@ -6,7 +6,7 @@ from win10toast import ToastNotifier
 import math
 
 ###################################################
-sensitivity = 6
+sensitivity = 10
 ###################################################
 
 pTime = 0

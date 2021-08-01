@@ -82,11 +82,11 @@ class HolisticDetector():
             for id, lm in enumerate(myHolistic.landmark):
                 # print(id,lm)
                 h, w, c = img.shape
-                cx, cy = int(lm.x*w), int(lm.y*h)
+                cx, cy, cz = int(lm.x*w), int(lm.y*h), int(lm.z*(w+h)/2)
                 # print(id, cx, cy)
                 xList.append(cx)
                 yList.append(cy)
-                self.face_lmList.append([id, cx, cy])
+                self.face_lmList.append([id, cx, cy, cz])
 
         return self.face_lmList
 
@@ -99,7 +99,7 @@ class HolisticDetector():
         return cx, cy
 
     def findDistance(self, p1, p2, img, draw=True, r=15, t=3):
-        x1, y1 = self.face_lmList[p1][1:]
+        x1, y1 = self.face_lmList[p1][1:3]
         x2, y2 = p2[0],p2[1]
 
         if draw:
