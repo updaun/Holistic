@@ -113,3 +113,19 @@ class HolisticDetector():
     def findDepth(self, p1, p2):
         depth = abs((self.pose_lmList[p1][3] + self.pose_lmList[p2][3]) / 2)
         return depth
+
+    def findEyeBlink(self, p1, p2, img, draw=True, r=15, t=3):
+        x1, y1 = self.face_lmList[p1][1:3]
+        x2, y2 = self.face_lmList[p2][1:3]
+
+        if draw:
+            cv2.line(img, (x1, y1), (x2, y2), (255,0,255), t)
+            cv2.circle(img, (x1, y1), r, (255,0,255), cv2.FILLED)
+            cv2.circle(img, (x2, y2), r, (255,0,255), cv2.FILLED)
+        length = math.hypot(x2-x1, y2-y1)
+
+        return length, img
+
+    def findEyeDepth(self, p1, p2):
+        depth = abs((self.face_lmList[p1][3] + self.face_lmList[p2][3]) / 2)
+        return depth
