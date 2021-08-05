@@ -1,5 +1,5 @@
 import cv2
-import HolisticModule as hm
+import modules.HolisticModule as hm
 from win10toast import ToastNotifier
 import math
 import time
