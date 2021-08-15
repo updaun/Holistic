@@ -129,3 +129,9 @@ class HolisticDetector():
     def findEyeDepth(self, p1, p2):
         depth = abs((self.face_lmList[p1][3] + self.face_lmList[p2][3]) / 2)
         return depth
+
+    def drawLine(self, p1, p2, img, t=3):
+        x1, y1 = self.face_lmList[p1][1:3]
+        x2, y2 = self.face_lmList[p2][1:3]
+
+        cv2.line(img, (x1, y1), (x2, y2), (255,255,255), t)
