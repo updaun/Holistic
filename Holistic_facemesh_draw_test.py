@@ -6,12 +6,18 @@ from modules.turtle_neck import turtlenect_detection
 from modules.eye_blink import eyeblink_detection
 from modules.fps import fps_present
 
+import numpy as np
+
 
 # video input 
 cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
+canvas = np.zeros((int(cap.get(4)), int(cap.get(3)), 3), np.uint8)
+
 # Holistic 객체(어떠한 행위를 하는 친구) 생성
 detector = hm.HolisticDetector()
+
+img_counter = 1
 
 while True:
     # defalut BGR img
@@ -40,6 +46,7 @@ while True:
         for part in draw_list:
             for i in range(len(part)-1):
                 detector.drawLine(part[i], part[i+1], img, t=2)
+                # detector.drawLine(part[i], part[i+1], canvas, t=2)
 
     fps_present(img, draw=False)
 
@@ -48,7 +55,23 @@ while True:
 
     # ESC 키를 눌렀을 때 창을 모두 종료하는 부분
     if cv2.waitKey(1) & 0xFF == 27:
+        if len(pose_lmList) != 0 and len(face_lmList) != 0:
+            for part in draw_list:
+                for i in range(len(part)-1):
+                    detector.drawLine(part[i], part[i+1], canvas, t=2)
+        cv2.imwrite(f'./output_image/canvas_{img_counter}.png', canvas)
+        print("Save Canvas Successfully")
         break 
+
+    # Spacebar 또는 Return 누르면 whiteCanvas 저장
+    if cv2.waitKey(1) & 0xFF == 32 or cv2.waitKey(1) & 0xFF == 13:
+        if len(pose_lmList) != 0 and len(face_lmList) != 0:
+            for part in draw_list:
+                for i in range(len(part)-1):
+                    detector.drawLine(part[i], part[i+1], canvas, t=2)
+        cv2.imwrite(f'./output_image/canvas_{img_counter}.png', canvas)
+        print("Save Canvas Successfully")
+        img_counter += 1
 
 cap.release()
 cv2.destroyAllWindows()
