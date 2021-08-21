@@ -34,14 +34,14 @@ class HolisticDetector():
                  # Draw pose, left and right hands, and face landmarks on the image.
                 annotated_image = img.copy()
 
-                self.mpDraw.draw_landmarks(
-                    annotated_image, self.results.face_landmarks, self.mpHolistic.FACE_CONNECTIONS)
+                # self.mpDraw.draw_landmarks(
+                #     annotated_image, self.results.face_landmarks, self.mpHolistic.FACE_CONNECTIONS)
                 self.mpDraw.draw_landmarks(
                     annotated_image, self.results.left_hand_landmarks, self.mpHolistic.HAND_CONNECTIONS)
                 self.mpDraw.draw_landmarks(
                     annotated_image, self.results.right_hand_landmarks, self.mpHolistic.HAND_CONNECTIONS)
-                self.mpDraw.draw_landmarks(
-                    annotated_image, self.results.pose_landmarks, self.mpHolistic.POSE_CONNECTIONS)
+                # self.mpDraw.draw_landmarks(
+                #     annotated_image, self.results.pose_landmarks, self.mpHolistic.POSE_CONNECTIONS)
 
                 # Plot pose world landmarks.
                 # self.mpDraw.plot_landmarks(
@@ -90,6 +90,47 @@ class HolisticDetector():
 
         return self.face_lmList
 
+    def findLefthandLandmark(self, img, draw=True):
+        xList = []
+        yList = []
+
+        self.left_hand_lmList = []
+        if self.results.left_hand_landmarks:
+            myHolistic = self.results.left_hand_landmarks
+            # print(myHolistic.landmark)
+            # print(type(myHolistic.landmark))
+            for id, lm in enumerate(myHolistic.landmark):
+                # print(id,lm)
+                h, w, c = img.shape
+                cx, cy, cz = int(lm.x*w), int(lm.y*h), int(lm.z*(w+h)/2)
+                # print(id, cx, cy)
+                # print(cz)
+                xList.append(cx)
+                yList.append(cy)
+                self.left_hand_lmList.append([id, cx, cy, cz])
+
+        return self.left_hand_lmList
+
+    def findRighthandLandmark(self, img, draw=True):
+        xList = []
+        yList = []
+
+        self.right_hand_lmList = []
+        if self.results.right_hand_landmarks:
+            myHolistic = self.results.right_hand_landmarks
+            # print(myHolistic.landmark)
+            # print(type(myHolistic.landmark))
+            for id, lm in enumerate(myHolistic.landmark):
+                # print(id,lm)
+                h, w, c = img.shape
+                cx, cy, cz = int(lm.x*w), int(lm.y*h), int(lm.z*(w+h)/2)
+                # print(id, cx, cy)
+                # print(cz)
+                xList.append(cx)
+                yList.append(cy)
+                self.right_hand_lmList.append([id, cx, cy, cz])
+
+        return self.right_hand_lmList
 
     def findCenter(self, p1, p2):
         x1, y1 = self.pose_lmList[p1][1:3]
