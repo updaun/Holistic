@@ -36,17 +36,18 @@ while True:
     left_hand_lmList = detector.findLefthandLandmark(img, draw=False)
     right_hand_lmList = detector.findRighthandLandmark(img, draw=False)
 
-    # h, w, c = overlayList[1].shape
-    # img[15:h+15, 15:w+15] = overlayList[1]
-    # cv2.rectangle(img, (0, 0), (int(cap.get(3)), int(cap.get(4))), (55, 55, 240), 30)
+    
 
     # 인체가 감지가 되었는지 확인하는 구문
     if len(left_hand_lmList) != 0 and len(right_hand_lmList) != 0:
         # print(left_hand_lmList)
         # print(right_hand_lmList)
-        # print(left_hand_lmList[4][2]) 
         thumb_length = math.hypot(abs(right_hand_lmList[4][1]-left_hand_lmList[4][1]), abs(right_hand_lmList[4][2]-left_hand_lmList[4][2]))
         index_length = math.hypot(abs(right_hand_lmList[8][1]-left_hand_lmList[8][1]), abs(right_hand_lmList[8][2]-left_hand_lmList[8][2]))
+        index_pip_length = math.hypot(abs(right_hand_lmList[6][1]-left_hand_lmList[6][1]), abs(right_hand_lmList[6][2]-left_hand_lmList[6][2]))
+
+        index_mcp_length = math.hypot(abs(right_hand_lmList[5][1]-left_hand_lmList[5][1]), abs(right_hand_lmList[5][2]-left_hand_lmList[5][2]))
+        print(index_mcp_length)
 
         left_threshold_length = math.hypot(abs(left_hand_lmList[0][1]-left_hand_lmList[17][1]), abs(left_hand_lmList[0][2]-left_hand_lmList[17][2]))
         left_hand_length = math.hypot(abs(left_hand_lmList[8][1]-left_hand_lmList[4][1]), abs(left_hand_lmList[8][2]-left_hand_lmList[4][2]))
@@ -54,13 +55,19 @@ while True:
         right_threshold_length = math.hypot(abs(right_hand_lmList[0][1]-right_hand_lmList[17][1]), abs(right_hand_lmList[0][2]-right_hand_lmList[17][2]))
         right_hand_length = math.hypot(abs(right_hand_lmList[8][1]-right_hand_lmList[4][1]), abs(right_hand_lmList[8][2]-right_hand_lmList[4][2]))
 
-        if thumb_length < 50 and index_length < 50 and left_hand_length > left_threshold_length and right_hand_length > right_threshold_length:
+
+
+        if thumb_length < 50 and index_length < 50 and left_hand_length > left_threshold_length and right_hand_length > right_threshold_length and index_pip_length > 50:
             h, w, c = overlayList[0].shape
             img[15:h+15, 15:w+15] = overlayList[0]
             cv2.rectangle(img, (0, 0), (int(cap.get(3)), int(cap.get(4))), (225, 125, 75), 30)
         # print(index_length)
 
-        
+        if right_hand_lmList[8][1] > left_hand_lmList[8][1] + 30 and index_mcp_length < 150:
+            h, w, c = overlayList[1].shape
+            img[15:h+15, 15:w+15] = overlayList[1]
+            cv2.rectangle(img, (0, 0), (int(cap.get(3)), int(cap.get(4))), (55, 55, 240), 30)
+
         pass
         # turtlenect_detection(detector, img, sensitivity = 8, log=False, notification=True)
 
