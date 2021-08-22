@@ -22,7 +22,7 @@ class HolisticDetector():
         self.holistics = self.mpHolistic.Holistic(self.static_image_mode, self.model_complexity, self.smooth_landmarks, self.min_detection_confidence, self.min_tracking_confidence)
         self.mpDraw = mp.solutions.drawing_utils
 
-        # self.tipIds = [4, 8, 12, 16, 20]
+        self.tipIds = [4, 8, 12, 16, 20]
 
     def findHolistic(self, img, draw = True):
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB )
@@ -131,6 +131,52 @@ class HolisticDetector():
                 self.right_hand_lmList.append([id, cx, cy, cz])
 
         return self.right_hand_lmList
+
+    def left_hand_fingersUp(self):
+        fingers = []
+        
+        if self.left_hand_lmList[self.tipIds[0]][1] < self.left_hand_lmList[self.tipIds[4]][1]:
+            if self.left_hand_lmList[self.tipIds[0]][1] < self.left_hand_lmList[self.tipIds[0] - 2][1]:
+                fingers.append(1)
+            else:
+                fingers.append(0)
+        if self.left_hand_lmList[self.tipIds[0]][1] > self.left_hand_lmList[self.tipIds[4]][1]:
+            if self.left_hand_lmList[self.tipIds[0]][1] > self.left_hand_lmList[self.tipIds[0] - 2][1]:
+                fingers.append(1)
+            else:
+                fingers.append(0)
+
+        # Fingers except Thumb
+        for id in range(1, 5):
+            if self.left_hand_lmList[self.tipIds[id]][2] < self.left_hand_lmList[self.tipIds[id]-2][2]:
+                fingers.append(1)
+            else:
+                fingers.append(0)
+
+        return fingers
+
+    def right_hand_fingersUp(self):
+        fingers = []
+
+        if self.right_hand_lmList[self.tipIds[0]][1] > self.right_hand_lmList[self.tipIds[4]][1]:
+            if self.right_hand_lmList[self.tipIds[0]][1] > self.right_hand_lmList[self.tipIds[0] - 2][1]:
+                fingers.append(1)
+            else:
+                fingers.append(0)
+        if self.right_hand_lmList[self.tipIds[0]][1] < self.right_hand_lmList[self.tipIds[4]][1]:
+            if self.right_hand_lmList[self.tipIds[0]][1] < self.right_hand_lmList[self.tipIds[0] - 2][1]:
+                fingers.append(1)
+            else:
+                fingers.append(0)
+
+        # Fingers except Thumb
+        for id in range(1, 5):
+            if self.right_hand_lmList[self.tipIds[id]][2] < self.right_hand_lmList[self.tipIds[id]-2][2]:
+                fingers.append(1)
+            else:
+                fingers.append(0)
+
+        return fingers
 
     def findCenter(self, p1, p2):
         x1, y1 = self.pose_lmList[p1][1:3]

@@ -40,6 +40,8 @@ while True:
 
     # 인체가 감지가 되었는지 확인하는 구문
     if len(left_hand_lmList) != 0 and len(right_hand_lmList) != 0:
+        left_hand_fingersUp_list = detector.left_hand_fingersUp()
+        right_hand_fingersUp_list = detector.right_hand_fingersUp()
         # print(left_hand_lmList)
         # print(right_hand_lmList)
         thumb_length = math.hypot(abs(right_hand_lmList[4][1]-left_hand_lmList[4][1]), abs(right_hand_lmList[4][2]-left_hand_lmList[4][2]))
@@ -67,6 +69,11 @@ while True:
             h, w, c = overlayList[1].shape
             img[15:h+15, 15:w+15] = overlayList[1]
             cv2.rectangle(img, (0, 0), (int(cap.get(3)), int(cap.get(4))), (55, 55, 240), 30)
+
+        if left_hand_fingersUp_list == [1,0,0,0,0] and right_hand_fingersUp_list == [1,0,0,0,0]: #and right_hand_lmList[4][2] > right_hand_lmList[2][2] and left_hand_lmList[4][2] > left_hand_lmList[2][2]:
+            h, w, c = overlayList[2].shape
+            img[15:h+15, 15:w+15] = overlayList[2]
+            cv2.rectangle(img, (0, 0), (int(cap.get(3)), int(cap.get(4))), (40, 220, 30), 30)
 
         pass
         # turtlenect_detection(detector, img, sensitivity = 8, log=False, notification=True)
