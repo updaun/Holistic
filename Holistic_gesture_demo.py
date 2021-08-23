@@ -15,6 +15,15 @@ folderPath = "expression_image"
 myList = os.listdir(folderPath)
 overlayList = []
 
+o_count = 0
+x_count = 0
+like_count = 0 
+o_present_count = 0
+x_present_count = 0
+like_present_count = 0
+
+epsilon = 1.0e-10
+
 for imPath in myList:
     image = cv2.imread(f'{folderPath}/{imPath}')
     print(f'{folderPath}/{imPath}')
@@ -42,6 +51,7 @@ while True:
     if len(left_hand_lmList) != 0 and len(right_hand_lmList) != 0:
         left_hand_fingersUp_list = detector.left_hand_fingersUp()
         right_hand_fingersUp_list = detector.right_hand_fingersUp()
+        print(left_hand_fingersUp_list, right_hand_fingersUp_list)
         # print(left_hand_lmList)
         # print(right_hand_lmList)
         thumb_length = math.hypot(abs(right_hand_lmList[4][1]-left_hand_lmList[4][1]), abs(right_hand_lmList[4][2]-left_hand_lmList[4][2]))
@@ -49,33 +59,79 @@ while True:
         index_pip_length = math.hypot(abs(right_hand_lmList[6][1]-left_hand_lmList[6][1]), abs(right_hand_lmList[6][2]-left_hand_lmList[6][2]))
 
         index_mcp_length = math.hypot(abs(right_hand_lmList[5][1]-left_hand_lmList[5][1]), abs(right_hand_lmList[5][2]-left_hand_lmList[5][2]))
-        print(index_mcp_length)
+
+        left_index_length = math.hypot(abs(right_hand_lmList[7][1]-left_hand_lmList[7][1]), abs(right_hand_lmList[7][2]-left_hand_lmList[7][2]))
+        # print(index_mcp_length)
 
         left_threshold_length = math.hypot(abs(left_hand_lmList[0][1]-left_hand_lmList[17][1]), abs(left_hand_lmList[0][2]-left_hand_lmList[17][2]))
-        left_hand_length = math.hypot(abs(left_hand_lmList[8][1]-left_hand_lmList[4][1]), abs(left_hand_lmList[8][2]-left_hand_lmList[4][2]))
+        left_hand_length = math.hypot(abs(left_hand_lmList[8][1]-left_hand_lmList[4][1]), abs(left_hand_lmList[8][2]-left_hand_lmList[4][2]))        
         
         right_threshold_length = math.hypot(abs(right_hand_lmList[0][1]-right_hand_lmList[17][1]), abs(right_hand_lmList[0][2]-right_hand_lmList[17][2]))
         right_hand_length = math.hypot(abs(right_hand_lmList[8][1]-right_hand_lmList[4][1]), abs(right_hand_lmList[8][2]-right_hand_lmList[4][2]))
 
+        # left_thumb_length = math.hypot(left_hand_lmList[4][1]-left_hand_lmList[2][1], left_hand_lmList[4][2]-left_hand_lmList[2][2])
+        # right_thumb_length = math.hypot(right_hand_lmList[4][1]-right_hand_lmList[2][1], right_hand_lmList[4][2]-right_hand_lmList[2][2])
+
+        # left_hand_degree = math.degrees(math.acos((left_hand_lmList[4][1]-left_hand_lmList[2][1]) / left_thumb_length))
+        # right_hand_degree = math.degrees(math.acos((right_hand_lmList[4][1]-right_hand_lmList[2][1]) / right_thumb_length))
 
 
+        # O detect
         if thumb_length < 50 and index_length < 50 and left_hand_length > left_threshold_length and right_hand_length > right_threshold_length and index_pip_length > 50:
+            o_count += 1
+            x_present_count = 0
+            like_present_count = 0
+            
+        # X detect
+        elif right_hand_lmList[8][1]+ 20 > left_hand_lmList[8][1]  and left_index_length < left_threshold_length and index_mcp_length < 150:
+        # if right_hand_lmList[8][1] > left_hand_lmList[8][1] and left_hand_degree > 20 and left_hand_degree < 60 and right_hand_degree < -20 and right_hand_degree > -60 and index_mcp_length < 150:
+            x_count += 1
+            o_present_count = 0
+            like_present_count = 0
+        
+        # like detect
+        elif left_hand_fingersUp_list[1:] == [0,0,0,0] and right_hand_fingersUp_list[1:] == [0,0,0,0] and right_hand_lmList[4][2] < right_hand_lmList[2][2] and left_hand_lmList[4][2] < left_hand_lmList[2][2]:
+            like_count += 1
+            o_present_count = 0
+            x_present_count = 0
+
+        if o_count > 10:
+            o_present_count = 15
+            o_count = 0
+            x_count = 0
+            like_count = 0
+        
+        if x_count > 10:
+            x_present_count = 15
+            o_count = 0
+            x_count = 0
+            like_count = 0
+
+        if like_count > 10:
+            like_present_count = 15
+            o_count = 0
+            x_count = 0
+            like_count = 0
+
+
+        if o_present_count > 0:
             h, w, c = overlayList[0].shape
             img[15:h+15, 15:w+15] = overlayList[0]
             cv2.rectangle(img, (0, 0), (int(cap.get(3)), int(cap.get(4))), (225, 125, 75), 30)
-        # print(index_length)
+            o_present_count -= 1
 
-        if right_hand_lmList[8][1] > left_hand_lmList[8][1] + 30 and index_mcp_length < 150:
+        if x_present_count > 0:
             h, w, c = overlayList[1].shape
             img[15:h+15, 15:w+15] = overlayList[1]
             cv2.rectangle(img, (0, 0), (int(cap.get(3)), int(cap.get(4))), (55, 55, 240), 30)
+            x_present_count -= 1
 
-        if left_hand_fingersUp_list == [1,0,0,0,0] and right_hand_fingersUp_list == [1,0,0,0,0]: #and right_hand_lmList[4][2] > right_hand_lmList[2][2] and left_hand_lmList[4][2] > left_hand_lmList[2][2]:
+        if like_present_count > 0:
             h, w, c = overlayList[2].shape
             img[15:h+15, 15:w+15] = overlayList[2]
             cv2.rectangle(img, (0, 0), (int(cap.get(3)), int(cap.get(4))), (40, 220, 30), 30)
-
-        pass
+            like_present_count -= 1
+        
         # turtlenect_detection(detector, img, sensitivity = 8, log=False, notification=True)
 
         # eyeblink_detection(detector, img, sensitivity = 10, log=True, notification=True)
