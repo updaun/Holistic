@@ -14,7 +14,7 @@ pTime = 0
 cTime = 0
 
 # video input 
-cap = cv2.VideoCapture(1, cv2.CAP_DSHOW)
+cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
 # Holistic 객체(어떠한 행위를 하는 친구) 생성
 detector = hm.HolisticDetector()
