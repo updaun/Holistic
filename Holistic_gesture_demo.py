@@ -49,31 +49,27 @@ while True:
 
     # 인체가 감지가 되었는지 확인하는 구문
     if len(left_hand_lmList) != 0 and len(right_hand_lmList) != 0:
-        left_hand_fingersUp_list = detector.left_hand_fingersUp()
-        right_hand_fingersUp_list = detector.right_hand_fingersUp()
-        print(left_hand_fingersUp_list, right_hand_fingersUp_list)
-        # print(left_hand_lmList)
-        # print(right_hand_lmList)
+
+        # To detect O gesture
         thumb_length = math.hypot(abs(right_hand_lmList[4][1]-left_hand_lmList[4][1]), abs(right_hand_lmList[4][2]-left_hand_lmList[4][2]))
         index_length = math.hypot(abs(right_hand_lmList[8][1]-left_hand_lmList[8][1]), abs(right_hand_lmList[8][2]-left_hand_lmList[8][2]))
+
+        left_hand_length = math.hypot(abs(left_hand_lmList[8][1]-left_hand_lmList[4][1]), abs(left_hand_lmList[8][2]-left_hand_lmList[4][2]))
+        left_threshold_length = math.hypot(abs(left_hand_lmList[0][1]-left_hand_lmList[17][1]), abs(left_hand_lmList[0][2]-left_hand_lmList[17][2]))
+                
+        right_hand_length = math.hypot(abs(right_hand_lmList[8][1]-right_hand_lmList[4][1]), abs(right_hand_lmList[8][2]-right_hand_lmList[4][2]))
+        right_threshold_length = math.hypot(abs(right_hand_lmList[0][1]-right_hand_lmList[17][1]), abs(right_hand_lmList[0][2]-right_hand_lmList[17][2]))
+
         index_pip_length = math.hypot(abs(right_hand_lmList[6][1]-left_hand_lmList[6][1]), abs(right_hand_lmList[6][2]-left_hand_lmList[6][2]))
 
+        # To detect X gesture
         index_mcp_length = math.hypot(abs(right_hand_lmList[5][1]-left_hand_lmList[5][1]), abs(right_hand_lmList[5][2]-left_hand_lmList[5][2]))
-
         left_index_length = math.hypot(abs(right_hand_lmList[7][1]-left_hand_lmList[7][1]), abs(right_hand_lmList[7][2]-left_hand_lmList[7][2]))
-        # print(index_mcp_length)
 
-        left_threshold_length = math.hypot(abs(left_hand_lmList[0][1]-left_hand_lmList[17][1]), abs(left_hand_lmList[0][2]-left_hand_lmList[17][2]))
-        left_hand_length = math.hypot(abs(left_hand_lmList[8][1]-left_hand_lmList[4][1]), abs(left_hand_lmList[8][2]-left_hand_lmList[4][2]))        
-        
-        right_threshold_length = math.hypot(abs(right_hand_lmList[0][1]-right_hand_lmList[17][1]), abs(right_hand_lmList[0][2]-right_hand_lmList[17][2]))
-        right_hand_length = math.hypot(abs(right_hand_lmList[8][1]-right_hand_lmList[4][1]), abs(right_hand_lmList[8][2]-right_hand_lmList[4][2]))
-
-        # left_thumb_length = math.hypot(left_hand_lmList[4][1]-left_hand_lmList[2][1], left_hand_lmList[4][2]-left_hand_lmList[2][2])
-        # right_thumb_length = math.hypot(right_hand_lmList[4][1]-right_hand_lmList[2][1], right_hand_lmList[4][2]-right_hand_lmList[2][2])
-
-        # left_hand_degree = math.degrees(math.acos((left_hand_lmList[4][1]-left_hand_lmList[2][1]) / left_thumb_length))
-        # right_hand_degree = math.degrees(math.acos((right_hand_lmList[4][1]-right_hand_lmList[2][1]) / right_thumb_length))
+        # To detect LIKE gesture
+        left_hand_fingersUp_list = detector.left_hand_fingersUp(axis=True)
+        right_hand_fingersUp_list = detector.right_hand_fingersUp(axis=True)
+        print(left_hand_fingersUp_list, right_hand_fingersUp_list)
 
 
         # O detect
@@ -83,18 +79,18 @@ while True:
             like_present_count = 0
             
         # X detect
-        elif right_hand_lmList[8][1]+ 20 > left_hand_lmList[8][1]  and left_index_length < left_threshold_length and index_mcp_length < 150:
-        # if right_hand_lmList[8][1] > left_hand_lmList[8][1] and left_hand_degree > 20 and left_hand_degree < 60 and right_hand_degree < -20 and right_hand_degree > -60 and index_mcp_length < 150:
+        elif right_hand_lmList[8][1]+ 15 > left_hand_lmList[8][1]  and left_index_length < left_threshold_length and index_mcp_length < 150:
             x_count += 1
             o_present_count = 0
             like_present_count = 0
         
-        # like detect
-        elif left_hand_fingersUp_list[1:] == [0,0,0,0] and right_hand_fingersUp_list[1:] == [0,0,0,0] and right_hand_lmList[4][2] < right_hand_lmList[2][2] and left_hand_lmList[4][2] < left_hand_lmList[2][2]:
+        # LIKE detect
+        elif left_hand_fingersUp_list == [1,0,0,0,0] and right_hand_fingersUp_list == [1,0,0,0,0] and right_hand_lmList[4][2] < right_hand_lmList[2][2] and left_hand_lmList[4][2] < left_hand_lmList[2][2]:
             like_count += 1
             o_present_count = 0
             x_present_count = 0
 
+        # count control
         if o_count > 10:
             o_present_count = 15
             o_count = 0
@@ -136,7 +132,7 @@ while True:
 
         # eyeblink_detection(detector, img, sensitivity = 10, log=True, notification=True)
 
-    # fps_present(img, draw=True)
+    # fps_present(img, draw=True)                                                                                                                                                                          
 
     # img를 우리에게 보여주는 부분
     cv2.imshow("Image", img)
