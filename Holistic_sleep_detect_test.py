@@ -4,10 +4,11 @@ from win10toast import ToastNotifier
 import modules.HolisticModule as hm
 from modules.turtle_neck import turtlenect_detection
 from modules.eye_blink import eyeblink_detection
-from modules.sleep_detect import sleepiness_detection
+from modules.sleep_detect_angle import sleepiness_detection
 
 from modules.fps import fps_present
 
+import math
 
 # video input 
 cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
@@ -26,14 +27,16 @@ while True:
     face_lmList = detector.findFaceLandmark(img, draw=False)
     
     # 인체가 감지가 되었는지 확인하는 구문
-    if len(pose_lmList) != 0 and len(face_lmList) != 0:
+    if len(face_lmList) != 0:
 
         # turtlenect_detection(detector, img, sensitivity = 8, log=False, notification=True)
 
         # eyeblink_detection(detector, img, sensitivity = 10, log=True, notification=True)
 
-        sleepiness_detection(detector, img, sensitivity = 12, log=True, notification=True)
+        # sleepiness_detection(detector, img, sensitivity = 12, log=True, notification=True)
 
+        sleepiness_detection(detector, img, log=True, notification=True)
+        
     fps_present(img, draw=True)
 
     # img를 우리에게 보여주는 부분
