@@ -2,8 +2,6 @@ import cv2
 from win10toast import ToastNotifier
 
 import modules.HolisticModule as hm
-from modules.turtle_neck import turtlenect_detection
-from modules.eye_blink import eyeblink_detection
 from modules.fps import fps_present
 
 import numpy as np
