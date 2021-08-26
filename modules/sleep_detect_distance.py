@@ -32,7 +32,7 @@ def sleepiness_detection(detector, img, sensitivity, log=False, notification=Tru
         sleep_count = 0
 
     
-    if sleep_count > 200:
+    if sleep_count > 120:
         if notification:
             sleep_detection_toaster.show_toast("Sleepiness WARNING", f" \nPlease Stretch your body.\n")
         sleep_count = 0
