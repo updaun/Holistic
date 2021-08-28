@@ -4,7 +4,7 @@ import os
 import math
 import modules.HolisticModule as hm
 from modules.turtle_neck import turtlenect_detection
-from modules.eye_blink import eyeblink_detection
+from modules.sleep_detect_angle import sleepiness_detection
 from modules.fps import fps_present
 
 
@@ -36,16 +36,20 @@ while True:
     # defalut BGR img
     success, img = cap.read()
     # mediapipe를 거친 이미지 생성 -> img
-    img = detector.findHolistic(img, draw=True)
+    img = detector.findHolistic(img, draw=False)
     # output -> list ( id, x, y, z) 32 개 좌표인데 예를 들면, (11, x, y, z)
-    # pose_lmList = detector.findPoseLandmark(img, draw=False)
+    pose_lmList = detector.findPoseLandmark(img, draw=False)
     # 468개의 얼굴 점 리스트
-    # face_lmList = detector.findFaceLandmark(img, draw=False)
+    face_lmList = detector.findFaceLandmark(img, draw=False)
     
     left_hand_lmList = detector.findLefthandLandmark(img, draw=False)
     right_hand_lmList = detector.findRighthandLandmark(img, draw=False)
 
-    
+    if len(face_lmList) != 0:
+        sleepiness_detection(detector, img, log=False, notification=False)
+
+    if len(pose_lmList) != 0 and len(face_lmList) != 0:
+        turtlenect_detection(detector, img, sensitivity = 9, log=False, notification=False)
 
     # 인체가 감지가 되었는지 확인하는 구문
     if len(left_hand_lmList) != 0 and len(right_hand_lmList) != 0:
@@ -69,7 +73,7 @@ while True:
         # To detect LIKE gesture
         left_hand_fingersUp_list = detector.left_hand_fingersUp(axis=True)
         right_hand_fingersUp_list = detector.right_hand_fingersUp(axis=True)
-        print(left_hand_fingersUp_list, right_hand_fingersUp_list)
+        # print(left_hand_fingersUp_list, right_hand_fingersUp_list)
 
 
         # O detect
