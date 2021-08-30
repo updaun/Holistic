@@ -17,7 +17,7 @@ def turtlenect_detection(detector, img, sensitivity, log=False, notification=Tru
 
     # 목 길이 center_shoulder 좌표와 얼굴 152번(턱) 좌표를 사용하여 길이 구하는 부분
     # 목 길이가 표시된 이미지로 변경
-    length, img = detector.findDistance(152, center_shoulder, img, draw=True)
+    length, img = detector.findDistance(152, center_shoulder, img, draw=False)
 
     # x, y, z좌표 예측 (노트북 웹캠과의 거리를 대강 예측) - 노트북과의 거리
     pose_depth = abs(500 - detector.findDepth(11,12)) 
@@ -38,7 +38,9 @@ def turtlenect_detection(detector, img, sensitivity, log=False, notification=Tru
 
     # 핵심 로직 목 길이가 임계치보다 작을 때, 거북목으로 생각한다.
     if length < turtleneck_detect_threshold:
-        turtle_neck_count += 1
+        turtle_neck_count += 2
+    else:
+        turtle_neck_count =0
 
     # 100번 거북목으로 인식되면 알림을 제공한다. 
     if length < turtleneck_detect_threshold and turtle_neck_count > 100:
@@ -54,4 +56,4 @@ def turtlenect_detection(detector, img, sensitivity, log=False, notification=Tru
         turtle_neck_count = 0
 
     if log:
-        print("Length : {:.3f},   Threshold : {:.3f},   Pose_depth : {}".format(length, turtleneck_detect_threshold, pose_depth))
+        print("Length : {:.3f},   Threshold : {:.3f},   turtle_neck_count : {}".format(length, turtleneck_detect_threshold, turtle_neck_count))
