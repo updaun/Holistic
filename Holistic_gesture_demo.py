@@ -77,6 +77,7 @@ while True:
         if len(pose_lmList) != 0:
             wrist_length = detector.findLength_pose(16,15)
             shoulder_length = detector.findLength_pose(12,11)
+            elbow_length = detector.findLength_pose(13,14)
             cross_length_1 = detector.findLength_pose(15,14)
             cross_length_2 = detector.findLength_pose(16,13)
         
@@ -88,7 +89,7 @@ while True:
             like_present_count = 0
 
         # O detect
-        elif pose_lmList[16][1] < pose_lmList[15][1] and wrist_length < shoulder_length and pose_lmList[16][2] < pose_lmList[10][2] and pose_lmList[15][2] < pose_lmList[9][2]:
+        elif pose_lmList[16][1] < pose_lmList[15][1] and wrist_length < shoulder_length and pose_lmList[16][2] < pose_lmList[10][2] and pose_lmList[15][2] < pose_lmList[9][2] and elbow_length > shoulder_length:
             o_count += 1
             x_present_count = 0
             like_present_count = 0
@@ -118,7 +119,8 @@ while True:
             cross_length_1 = detector.findLength_pose(15,14)
             cross_length_2 = detector.findLength_pose(16,13)
 
-            if pose_lmList[16][1] < pose_lmList[15][1] and wrist_length < shoulder_length and pose_lmList[16][2] < pose_lmList[10][2] and pose_lmList[15][2] < pose_lmList[9][2]:
+            # O detect
+            if pose_lmList[16][1] < pose_lmList[15][1] and wrist_length < shoulder_length and pose_lmList[16][2] < pose_lmList[10][2] and pose_lmList[15][2] < pose_lmList[9][2] and elbow_length > shoulder_length:
                 o_count += 1
                 x_present_count = 0
                 like_present_count = 0
