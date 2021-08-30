@@ -40,8 +40,8 @@ class HolisticDetector():
                     annotated_image, self.results.left_hand_landmarks, self.mpHolistic.HAND_CONNECTIONS)
                 self.mpDraw.draw_landmarks(
                     annotated_image, self.results.right_hand_landmarks, self.mpHolistic.HAND_CONNECTIONS)
-                # self.mpDraw.draw_landmarks(
-                #     annotated_image, self.results.pose_landmarks, self.mpHolistic.POSE_CONNECTIONS)
+                self.mpDraw.draw_landmarks(
+                    annotated_image, self.results.pose_landmarks, self.mpHolistic.POSE_CONNECTIONS)
 
                 # Plot pose world landmarks.
                 # self.mpDraw.plot_landmarks(
@@ -178,7 +178,7 @@ class HolisticDetector():
                         fingers.append(0)
 
 
-            return fingers
+        return fingers
 
     def right_hand_fingersUp(self, axis=False):
         fingers = []
@@ -271,3 +271,31 @@ class HolisticDetector():
         x2, y2 = self.face_lmList[p2][1:3]
 
         cv2.line(img, (x1, y1), (x2, y2), (255,255,255), t)
+
+    def findLength_lh_rh(self, p1, p2):
+        x1, y1 = self.left_hand_lmList[p2][1:3]
+        x2, y2 = self.right_hand_lmList[p1][1:3]
+
+        length = math.hypot(abs(x2-x1), abs(y2-y1))
+        return length
+
+    def findLength_lh_lh(self, p1, p2):
+        x1, y1 = self.left_hand_lmList[p2][1:3]
+        x2, y2 = self.left_hand_lmList[p1][1:3]
+
+        length = math.hypot(abs(x2-x1), abs(y2-y1))
+        return length
+
+    def findLength_rh_rh(self, p1, p2):
+        x1, y1 = self.right_hand_lmList[p2][1:3]
+        x2, y2 = self.right_hand_lmList[p1][1:3]
+
+        length = math.hypot(abs(x2-x1), abs(y2-y1))
+        return length
+
+    def findLength_pose(self, p1, p2):
+        x1, y1 = self.pose_lmList[p2][1:3]
+        x2, y2 = self.pose_lmList[p1][1:3]
+
+        length = math.hypot(abs(x2-x1), abs(y2-y1))
+        return length
