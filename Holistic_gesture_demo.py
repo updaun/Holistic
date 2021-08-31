@@ -107,7 +107,7 @@ while True:
             like_present_count = 0
         
         # LIKE detect
-        elif left_hand_fingersUp_list_a1 == [1,0,0,0,0] and left_hand_fingersUp_list_a1 == [1,0,0,0,0] and right_hand_lmList[4][2] < right_hand_lmList[2][2] and left_hand_lmList[4][2] < left_hand_lmList[2][2]:
+        elif left_hand_fingersUp_list_a0[1:] == [0,0,0,0] and left_hand_fingersUp_list_a0[1:] == [0,0,0,0] and left_hand_fingersUp_list_a1 == [1,0,0,0,0] and left_hand_fingersUp_list_a1 == [1,0,0,0,0] and right_hand_lmList[4][2] < right_hand_lmList[2][2] and left_hand_lmList[4][2] < left_hand_lmList[2][2]:
             like_count += 1
             o_present_count = 0
             x_present_count = 0
