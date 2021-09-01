@@ -10,7 +10,7 @@ mp_holistic = mp.solutions.holistic # Mediapipe Solutions
 with open('./models/body_language.pkl', 'rb') as f:
     model = pickle.load(f)
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 # Initiate holistic model
 with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
     
