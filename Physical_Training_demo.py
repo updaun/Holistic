@@ -51,8 +51,12 @@ while True:
         # Draw curl count
         #cv2.putText(img, f'{count}', (50,100), cv2.FONT_HERSHEY_PLAIN, 5, (255,0,0), 5)
         cv2.rectangle(img, (0, 300), (150, 480), (0, 255, 0), cv2.FILLED)
-        cv2.putText(img, str(int(count)), (50, 420),
-                    cv2.FONT_HERSHEY_PLAIN, 7, (255, 0, 0), 12)
+        if count < 10:
+            cv2.putText(img, str(int(count)), (40, 420),
+                        cv2.FONT_HERSHEY_PLAIN, 7, (255, 0, 0), 12)
+        else:
+            cv2.putText(img, str(int(count)), (0, 420),
+                        cv2.FONT_HERSHEY_PLAIN, 7, (255, 0, 0), 12)
 
     cTime = time.time()
     fps = 1/(cTime-pTime)
