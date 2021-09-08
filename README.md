@@ -2,8 +2,7 @@
  HolisticProject to using mediapipe python
    
 ## Development Environments
- - You have to install Python UPPER 3.7.7
- - I used Python 3.7.7
+- Python 3.8
  
 ## Set Project
 
@@ -29,15 +28,5 @@ pip install -r requirements.txt
 git pull origin master
 ```
 
-
-## Run programs
-- First, I recommand this project. It can show how to work this project.
-```
-python Holistic_turtleneck_demo.py
-```
-- Second, It doesn't have view(On upgrading)
-```
-python Holistic_turtleneck_noimgview.py
-```
 
 ## Thank you for watching my project~ :)
