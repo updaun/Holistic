@@ -38,8 +38,8 @@ class HolisticDetector():
                 #     annotated_image, self.results.face_landmarks, self.mpHolistic.FACE_CONNECTIONS)
                 # self.mpDraw.draw_landmarks(
                 #     annotated_image, self.results.left_hand_landmarks, self.mpHolistic.HAND_CONNECTIONS)
-                # self.mpDraw.draw_landmarks(
-                #     annotated_image, self.results.right_hand_landmarks, self.mpHolistic.HAND_CONNECTIONS)
+                self.mpDraw.draw_landmarks(
+                    annotated_image, self.results.right_hand_landmarks, self.mpHolistic.HAND_CONNECTIONS)
                 # self.mpDraw.draw_landmarks(
                 #     annotated_image, self.results.pose_landmarks, self.mpHolistic.POSE_CONNECTIONS)
 
@@ -224,6 +224,53 @@ class HolisticDetector():
                         fingers.append(1)
                     else:
                         fingers.append(0)
+
+        return fingers
+
+    def right_hand_fingersUp_test(self, axis=False):
+        fingers = []
+
+        if axis == False:
+            # Thumb
+            if self.right_hand_lmList[self.tipIds[0]][1] > self.right_hand_lmList[self.tipIds[4]][1]:
+                if self.right_hand_lmList[self.tipIds[0]][1] > self.right_hand_lmList[self.tipIds[0] - 2][1]:
+                    fingers.append(1)
+                else:
+                    fingers.append(0)
+            if self.right_hand_lmList[self.tipIds[0]][1] < self.right_hand_lmList[self.tipIds[4]][1]:
+                if self.right_hand_lmList[self.tipIds[0]][1] < self.right_hand_lmList[self.tipIds[0] - 2][1]:
+                    fingers.append(1)
+                else:
+                    fingers.append(0)
+
+            # Fingers except Thumb
+            for id in range(1, 5):
+                if self.right_hand_lmList[self.tipIds[id]][2] < self.right_hand_lmList[self.tipIds[id]-2][2]:
+                    fingers.append(1)
+                else:
+                    fingers.append(0)
+
+        # axis = True( to detect LIKE gesture )
+        else:
+            # Thumb
+            if self.right_hand_lmList[self.tipIds[0]][2] < self.right_hand_lmList[self.tipIds[0] - 2][2]:
+                fingers.append(1)
+            else:
+                fingers.append(0)
+
+            # Fingers except Thumb
+            # if self.right_hand_lmList[self.tipIds[0]][1] < self.right_hand_lmList[self.tipIds[4]][1]:
+            for id in range(1, 5):
+                if self.right_hand_lmList[self.tipIds[id]][1] > self.right_hand_lmList[self.tipIds[id]-2][1]:
+                    fingers.append(1)
+                else:
+                    fingers.append(0)
+            # else:
+            #     for id in range(1, 5):
+            #         if self.right_hand_lmList[self.tipIds[id]][1] < self.right_hand_lmList[self.tipIds[id]-2][1]:
+            #             fingers.append(1)
+            #         else:
+            #             fingers.append(0)
 
         return fingers
 
