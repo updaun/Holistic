@@ -21,7 +21,6 @@ while True:
     # mediapipe를 거친 이미지 생성 -> img
     img = detector.findHolistic(img, draw=True)
     
-    
     # left_hand_lmList = detector.findLefthandLandmark(img, draw=False)
     right_hand_lmList = detector.findRighthandLandmark(img, draw=True)
 
@@ -73,23 +72,21 @@ while True:
                 number = 9
 
         if right_hand_lmList[5][2] < right_hand_lmList[17][2] and right_hand_lmList[1][2] < right_hand_lmList[13][2]:
-            if right_hand_fingersUp_list_a1[0] == 0 and right_hand_fingersUp_list_a1[2:] == [1, 0, 0] and right_hand_lmList[8][1] <= right_hand_lmList[6][1] + 20:
-                number = 12
-            elif right_hand_fingersUp_list_a1[0] == 0 and right_hand_fingersUp_list_a1[2:] == [1, 1, 0] and right_hand_lmList[8][1] <= right_hand_lmList[6][1] + 20:
-                number = 13
-            elif right_hand_fingersUp_list_a1[0] == 0 and right_hand_fingersUp_list_a1[2:] == [1, 1, 1] and right_hand_lmList[8][1] <= right_hand_lmList[6][1] + 20:
-                number = 14
-
-            if right_hand_fingersUp_list_a1[0] == 1 and right_hand_fingersUp_list_a1[2:] == [1, 0, 0] and right_hand_lmList[8][1] <= right_hand_lmList[6][1] + 20:
-                number = 17
-            elif right_hand_fingersUp_list_a1[0] == 1 and right_hand_fingersUp_list_a1[2:] == [1, 1, 0] and right_hand_lmList[8][1] <= right_hand_lmList[6][1] + 20:
-                number = 18
-            elif right_hand_fingersUp_list_a1[0] == 1 and right_hand_fingersUp_list_a1[2:] == [1, 1, 1] and right_hand_lmList[8][1] <= right_hand_lmList[6][1] + 20:
-                number = 19
-        
-        
-
-        
+            if thumb_index_length < 30:
+                if right_hand_fingersUp_list_a1[2:] == [1, 0, 0] and right_hand_lmList[8][1] <= right_hand_lmList[6][1] + 20:
+                    number = 12
+                elif right_hand_fingersUp_list_a1[2:] == [1, 1, 0] and right_hand_lmList[8][1] <= right_hand_lmList[6][1] + 20:
+                    number = 13
+                elif right_hand_fingersUp_list_a1[2:] == [1, 1, 1] and right_hand_lmList[8][1] <= right_hand_lmList[6][1] + 20:
+                    number = 14
+            else:
+                if right_hand_fingersUp_list_a1[2:] == [1, 0, 0] and right_hand_lmList[8][1] <= right_hand_lmList[6][1] + 20:
+                    number = 17
+                elif right_hand_fingersUp_list_a1[2:] == [1, 1, 0] and right_hand_lmList[8][1] <= right_hand_lmList[6][1] + 20:
+                    number = 18
+                elif right_hand_fingersUp_list_a1[2:] == [1, 1, 1] and right_hand_lmList[8][1] <= right_hand_lmList[6][1] + 20:
+                    number = 19
+                
 
 
 
