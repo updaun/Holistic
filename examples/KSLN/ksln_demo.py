@@ -28,17 +28,17 @@ while True:
     # if len(left_hand_lmList) != 0 and len(right_hand_lmList) != 0:
     if len(right_hand_lmList) != 0:
 
-        # 수향이 위쪽 손가락 리스트
+        # x축을 기준으로 손가락 리스트
         right_hand_fingersUp_list_a0 = detector.right_hand_fingersUp_test(axis=False)
-        # 수향이 몸쪽 손가락 리스트
+        # y축을 기준으로 손가락 리스트
         right_hand_fingersUp_list_a1 = detector.right_hand_fingersUp_test(axis=True)
-        # 엄지 끝과 검지 끝의 거리
+        # 엄지 끝과 검지 끝의 거리 측정
         thumb_index_length = detector.findLength_rh_rh(4, 8)
 
         print(right_hand_fingersUp_list_a0, right_hand_fingersUp_list_a1)
 
         
-
+        # 손바닥이 보임, 수향이 위쪽
         if right_hand_lmList[5][1] > right_hand_lmList[17][1] and right_hand_lmList[4][2] > right_hand_lmList[8][2]:
             if right_hand_fingersUp_list_a0 == [0, 1, 0, 0, 0] and right_hand_lmList[8][2] < right_hand_lmList[7][2]:
                 number = 1
@@ -52,15 +52,18 @@ while True:
             elif right_hand_fingersUp_list_a0 == [1, 0, 1, 1, 1] and thumb_index_length < 30:
                 number = 10
 
+        # 손바닥이 보임
         if right_hand_lmList[5][1] > right_hand_lmList[17][1]:
             if right_hand_fingersUp_list_a0 == [1, 0, 0, 0, 0]:
                 number = 5
 
+        # 손가락을 살짝 구부려 10과 20 구분
         if right_hand_fingersUp_list_a0[0] == 0 and right_hand_fingersUp_list_a0[2:] == [0, 0, 0] and right_hand_lmList[8][2] + 20 >= right_hand_lmList[7][2]:
             number = 10
         elif right_hand_fingersUp_list_a0[0] == 0 and right_hand_fingersUp_list_a0[3:] == [0, 0] and right_hand_lmList[8][2] + 20 >= right_hand_lmList[7][2] and right_hand_lmList[12][2] + 20 >= right_hand_lmList[11][2]:
             number = 20
 
+        # 손등이 보임, 수향이 몸 안쪽으로 향함
         if right_hand_lmList[5][2] < right_hand_lmList[17][2] and right_hand_lmList[4][2] < right_hand_lmList[8][2]:
             if right_hand_fingersUp_list_a1 == [1, 1, 0, 0, 0]:
                 number = 6
@@ -72,7 +75,8 @@ while True:
                 number = 9
 
         if right_hand_lmList[5][2] < right_hand_lmList[17][2] and right_hand_lmList[1][2] < right_hand_lmList[13][2]:
-            if thumb_index_length < 30:
+            # if thumb_index_length < 30:
+            if right_hand_lmList[4][2] + 30 > right_hand_lmList[8][2]:
                 if right_hand_fingersUp_list_a1[2:] == [1, 0, 0] and right_hand_lmList[8][1] <= right_hand_lmList[6][1] + 20:
                     number = 12
                 elif right_hand_fingersUp_list_a1[2:] == [1, 1, 0] and right_hand_lmList[8][1] <= right_hand_lmList[6][1] + 20:
