@@ -24,8 +24,7 @@ while True:
     # left_hand_lmList = detector.findLefthandLandmark(img, draw=False)
     right_hand_lmList = detector.findRighthandLandmark(img, draw=True)
 
-    # 인체가 감지가 되었는지 확인하는 구문
-    # if len(left_hand_lmList) != 0 and len(right_hand_lmList) != 0:
+    # 감지가 되었는지 확인하는 구문
     if len(right_hand_lmList) != 0:
 
         # x축을 기준으로 손가락 리스트
@@ -63,7 +62,7 @@ while True:
         elif right_hand_fingersUp_list_a0[0] == 0 and right_hand_fingersUp_list_a0[3:] == [0, 0] and right_hand_lmList[8][2] + 20 >= right_hand_lmList[7][2] and right_hand_lmList[12][2] + 20 >= right_hand_lmList[11][2]:
             number = 20
 
-        # 손등이 보임, 수향이 몸 안쪽으로 향함
+        # 손등이 보임, 수향이 몸 안쪽으로 향함, 엄지가 들려 있음
         if right_hand_lmList[5][2] < right_hand_lmList[17][2] and right_hand_lmList[4][2] < right_hand_lmList[8][2]:
             if right_hand_fingersUp_list_a1 == [1, 1, 0, 0, 0]:
                 number = 6
@@ -74,8 +73,9 @@ while True:
             elif right_hand_fingersUp_list_a1 == [1, 1, 1, 1, 1]:
                 number = 9
 
+        # 손등이 보이고, 수향이 몸 안쪽으로 향함
         if right_hand_lmList[5][2] < right_hand_lmList[17][2] and right_hand_lmList[1][2] < right_hand_lmList[13][2]:
-            # if thumb_index_length < 30:
+            # 엄지가 숨어짐
             if right_hand_lmList[4][2] + 30 > right_hand_lmList[8][2]:
                 if right_hand_fingersUp_list_a1[2:] == [1, 0, 0] and right_hand_lmList[8][1] <= right_hand_lmList[6][1] + 20:
                     number = 12
@@ -83,6 +83,7 @@ while True:
                     number = 13
                 elif right_hand_fingersUp_list_a1[2:] == [1, 1, 1] and right_hand_lmList[8][1] <= right_hand_lmList[6][1] + 20:
                     number = 14
+            # 엄지가 보임
             else:
                 if right_hand_fingersUp_list_a1[2:] == [1, 0, 0] and right_hand_lmList[8][1] <= right_hand_lmList[6][1] + 20:
                     number = 17
