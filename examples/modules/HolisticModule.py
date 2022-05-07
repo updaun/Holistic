@@ -8,10 +8,16 @@ class HolisticDetector():
                static_image_mode=False,
                model_complexity=1,
                smooth_landmarks=True,
+               enable_segmentation=False,
+               smooth_segmentation=True,
+               refine_face_landmarks=False,
                min_detection_confidence=0.5,
                min_tracking_confidence=0.5):
         self.static_image_mode = static_image_mode
         self.model_complexity = model_complexity
+        self.enable_segmentation = enable_segmentation
+        self.smooth_segmentation = smooth_segmentation
+        self.refine_face_landmarks = refine_face_landmarks
         self.smooth_landmarks = smooth_landmarks
         self.min_detection_confidence = min_detection_confidence
         self.min_tracking_confidence = min_tracking_confidence
@@ -19,7 +25,14 @@ class HolisticDetector():
         self.mpHolistic = mp.solutions.holistic
         self.mpPose = mp.solutions.pose
         self.mpFace = mp.solutions.face_mesh
-        self.holistics = self.mpHolistic.Holistic(self.static_image_mode, self.model_complexity, self.smooth_landmarks, self.min_detection_confidence, self.min_tracking_confidence)
+        self.holistics = self.mpHolistic.Holistic(self.static_image_mode,
+                                                  self.model_complexity,
+                                                  self.enable_segmentation,
+                                                  self.smooth_segmentation,
+                                                  self.refine_face_landmarks,
+                                                  self.smooth_landmarks,
+                                                  self.min_detection_confidence,
+                                                  self.min_tracking_confidence)
         self.mpDraw = mp.solutions.drawing_utils
 
         self.tipIds = [4, 8, 12, 16, 20]
