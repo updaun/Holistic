@@ -4,14 +4,19 @@ import time
 import math
 
 class handDetector():
-    def __init__(self, mode=False, maxHands = 2, detectionCon=0.5, trackCon=0.5):
-        self.mode = mode
-        self.maxHands = maxHands
-        self.dectectionCon = detectionCon
-        self.trackCon = trackCon
+    def __init__(self, static_image_mode=False,
+               max_num_hands=2,
+               model_complexity=1,
+               min_detection_confidence=0.5,
+               min_tracking_confidence=0.5):
+        self.static_image_mode = static_image_mode
+        self.max_num_hands = max_num_hands
+        self.model_complexity = model_complexity
+        self.min_detection_confidence = min_detection_confidence
+        self.min_tracking_confidence = min_tracking_confidence
 
         self.mpHands = mp.solutions.hands
-        self.hands = self.mpHands.Hands(self.mode, self.maxHands, self.dectectionCon, self.trackCon)
+        self.hands = self.mpHands.Hands(self.static_image_mode, self.max_num_hands, self.model_complexity, self.min_detection_confidence, self.min_tracking_confidence)
         self.mpDraw = mp.solutions.drawing_utils
 
         self.tipIds = [4, 8, 12, 16, 20]

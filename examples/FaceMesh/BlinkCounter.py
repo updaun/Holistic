@@ -68,4 +68,6 @@ while True:
 
 
     cv2.imshow("Image", imgStack)
+    if cv2.waitKey(1) & 0xFF == 27:
+        break
     cv2.waitKey(1)

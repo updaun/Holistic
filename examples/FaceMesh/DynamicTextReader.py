@@ -43,4 +43,6 @@ while True:
 
     imgStacked = cvzone.stackImages([img, imgText], 2, 1)
     cv2.imshow("Image", imgStacked)
+    if cv2.waitKey(1) & 0xFF == 27:
+        break
     cv2.waitKey(1)

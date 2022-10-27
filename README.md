@@ -22,10 +22,14 @@ cd Holistic
 pip install -r requirements.txt
 ```
 
-- How to get newest version (IF you already download before)
-
+## troubleshooting
+[error]
 ```
-git pull origin master
+ImportError: DLL load failed while importing win32api: 지정된 모듈을 찾을 수 없습니다.
+```
+[solution] reference: https://gentlesark.tistory.com/112 
+```
+conda install -c anaconda pywin32
 ```
 
 
